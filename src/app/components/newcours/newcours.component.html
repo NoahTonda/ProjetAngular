@@ -1,0 +1,36 @@
+<div class="container">
+  <div>
+    <h1>Création Cours</h1>
+  </div>
+  <form [formGroup]="coursFormGroup" *ngIf="coursFormGroup">
+    <!-- *ngIf permet de n'afficher le formulaire qu'une fois
+         coursFormGroup initialisé dans la classe de contrôle -->
+
+    <div class="form-group">
+      <label>Matière</label>
+      <input type="text" class="form-control" formControlName="matiere" [ngClass]="{'is-invalid': submitted && coursFormGroup.controls.matiere.errors}">
+      <div *ngIf="submitted && coursFormGroup.controls.matiere.errors" class="invalid-feedback">
+        <div *ngIf="coursFormGroup.controls.matiere.errors.required">
+          Matière obligatoire
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Nombre d'heures</label>
+      <input type="text" class="form-control" formControlName="nbreHeures" [ngClass]="{'is-invalid': submitted && coursFormGroup.controls.nbreHeures.errors}">
+      <div *ngIf="submitted && coursFormGroup.controls.nbreHeures.errors" class="invalid-feedback">
+        <div *ngIf="coursFormGroup.controls.nbreHeures.errors.required">
+          Nombre d'heures obligatoire
+        </div>
+        <div *ngIf="coursFormGroup.controls.nbreHeures.errors.pattern">
+          Le nombre d'heures doit être un entier positif
+        </div>
+      </div>
+    </div>
+
+    <button (click)="onSaveCours()" class="btn btn-success">
+      Save
+    </button>
+  </form>
+</div>

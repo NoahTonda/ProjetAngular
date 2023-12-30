@@ -1,0 +1,73 @@
+<div class="container">
+  <form [formGroup]="coursFormGroup" *ngIf="coursFormGroup">
+    <div class = "form-group">
+      <label>IDCOURS</label>
+      <input type ="text" class="form-control" formControlName="id" readonly>
+    </div>
+    <div class="form-group">
+      <label>Matière</label>
+      <input type="text" class="form-control" formControlName="matiere" [ngClass]="{'is-invalid': submitted && coursFormGroup.controls.matiere.errors}">
+      <div *ngIf="submitted && coursFormGroup.controls.matiere.errors" class="invalid-feedback">
+        <div *ngIf="coursFormGroup.controls.matiere.errors.required">
+          Matière obligatoire
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Nombre d'heures</label>
+      <input type="text" class="form-control" formControlName="nbreHeures" [ngClass]="{'is-invalid': submitted && coursFormGroup.controls.nbreHeures.errors}">
+      <div *ngIf="submitted && coursFormGroup.controls.nbreHeures.errors" class="invalid-feedback">
+        <div *ngIf="coursFormGroup.controls.nbreHeures.errors.required">
+          Nombre d'heures obligatoire
+        </div>
+        <div *ngIf="coursFormGroup.controls.nbreHeures.errors.pattern">
+          Le nombre d'heures doit être un entier positif
+        </div>
+      </div>
+    </div>
+  </form>
+  <nav class="navbar navbar-expand-sm bg-light navbar-light">
+    <ul class="navbar navbar-nav">
+      <li class="nav-item">
+        <button (click)="onUpdateCours()" class="btn btn-success">
+          Save
+        </button>
+      </li>
+      <li class="nav-item">
+        <button (click)="onSeeSessionsCours()" class="btn btn-success">
+          Sessions de cours
+        </button>
+      </li>
+    </ul>
+  </nav>
+  <ng-container *ngIf="sessionsCours" >
+    <ng-container *ngIf="sessionsCours.length>0 else vide">
+      <table class="table">
+        <thead>
+        <th>Id session</th>
+        <th>Date de debut</th>
+        <th>Date de fin</th>
+        <th>Nombre d'inscrits</th>
+        <th>Cours</th>
+        <th>Formateur</th>
+        <th>Local</th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let sc of sessionsCours">
+          <td>{{sc.id}}</td>
+          <td>{{sc.dateDebut|date: 'dd-MM-yyyy'}}</td>
+          <td>{{sc.dateFin|date: 'dd-MM-yyyy'}}</td>
+          <td>{{sc.nbreInscrits}}</td>
+          <td>{{sc.cours.matiere}}</td>
+          <td>{{sc.formateur.nom}}</td>
+          <td>{{sc.local.sigle}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <ng-template #vide>
+      Aucune session pour ce cours
+    </ng-template>
+  </ng-container>
+</div>
