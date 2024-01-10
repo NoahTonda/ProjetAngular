@@ -36,9 +36,9 @@ export class EditsessioncoursComponent implements OnInit{
         dateDebut: [formatDate(sessionCours.dateDebut, 'yyyy-MM-dd', 'en'), [Validators.required]],
         dateFin: [formatDate(sessionCours.dateFin, 'yyyy-MM-dd', 'en'), [Validators.required]],
         nbreInscrits: [sessionCours.nbreInscrits, [Validators.required, Validators.pattern(/^[1-9]\d*$/)]],
-        formateur: [sessionCours.formateur.nom, Validators.required],
-        local: [sessionCours.local.sigle, Validators.required],
-        cours: [sessionCours.cours.matiere, Validators.required],
+        formateur: [sessionCours.formateur.id, Validators.required],
+        local: [sessionCours.local.id, Validators.required],
+        cours: [sessionCours.cours.id, Validators.required],
       });
       });
     // Chargez la liste des cours, formateurs et locaux depuis la base de données
