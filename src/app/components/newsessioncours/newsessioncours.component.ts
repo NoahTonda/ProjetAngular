@@ -9,6 +9,7 @@ import {FormateurService} from "../../services/formateur.service";
 import {formatDate} from '@angular/common';
 import {LocalService} from "../../services/local.service";
 import {Local} from "../../entities/local.entities";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-newsessioncours',
@@ -26,7 +27,7 @@ export class NewsessioncoursComponent implements OnInit{
   sessionCoursFormGroup?: FormGroup;
   submitted = false;
   sc?:SessionCours;
-  constructor(private fb: FormBuilder, private sessionCoursService: SessionCoursService, private coursService: CoursService, private formateurService: FormateurService, private localService: LocalService) { }
+  constructor(private router:Router,private fb: FormBuilder, private sessionCoursService: SessionCoursService, private coursService: CoursService, private formateurService: FormateurService, private localService: LocalService) { }
   ngOnInit(): void {
     this.sessionCoursFormGroup = this.fb.group({
       dateDebut: [formatDate(new Date(), 'yyyy-MM-dd', 'en'), [Validators.required]],
@@ -75,12 +76,15 @@ export class NewsessioncoursComponent implements OnInit{
   }
   onSaveSessionCours(): void {
     this.submitted = true;
-    if (this.sessionCoursFormGroup?.invalid) { return; }
-    this.sessionCoursService.save(this.sessionCoursFormGroup?.value, this.coursact?.value,this.locact?.value,this.formact?.value).subscribe(data => {
+    if (this.sessionCoursFormGroup?.invalid) {
+      return;
+    }
+    this.sessionCoursService.save(this.sessionCoursFormGroup?.value).subscribe(
+      data => {
         alert('sauvegarde ok');
         this.sc = data;
-        this.newSessionCours.emit(data)
-      },
+        this.router.navigate(['sessionCours']);
+        },
       err => {
         alert(err.headers.get("error"));
       });

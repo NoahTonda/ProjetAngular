@@ -1,84 +1,76 @@
 <div class="container">
   <form [formGroup]="sessionCoursFormGroup" *ngIf="sessionCoursFormGroup">
-    <table class="table">
-      <thead>
-      <th>Id session</th>
-      <th>Date de Début</th>
-      <th>Date de fin</th>
-      <th>Nombre d'inscrits</th>
-      <th>Cours</th>
-      <th>Formateur</th>
-      <th>Local</th>
-      </thead>
-      <tbody>
-      <td *ngIf="sc ;else vide">{{sc.id}} </td>
-      <ng-template #vide><td></td></ng-template>
-      <td>
-        <input type ="date" class="form-control" formControlName="dateDebut"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.dateDebut.errors}">
-        <div *ngIf="submitted && sessionCoursFormGroup.controls.dateDebut.errors" class="invalid-feedback">
-          <div *ngIf="sessionCoursFormGroup.controls.dateDebut.errors.required">
-            Date obligatoire
+    <div class = "form-group">
+      <label>ID SESSION</label>
+      <input type ="text" class="form-control" formControlName="id" readonly>
+    </div>
+    <div class="form-group">
+      <label>DATE DE DÉBUT</label>
+      <input type ="date" class="form-control" formControlName="dateDebut"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.dateDebut.errors}">
+      <div *ngIf="submitted && sessionCoursFormGroup.controls.dateDebut.errors" class="invalid-feedback">
+        <div *ngIf="sessionCoursFormGroup.controls.dateDebut.errors.required">
+          Date obligatoire
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>DATE DE FIN</label>
+      <input type ="date" class="form-control" formControlName="dateFin"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.dateFin.errors}">
+      <div *ngIf="submitted && sessionCoursFormGroup.controls.dateFin.errors" class="invalid-feedback">
+        <div *ngIf="sessionCoursFormGroup.controls.dateFin.errors.required">
+          Date obligatoire
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>NOMBRE D'INSCRITS</label>
+      <input type ="text" class="form-control" formControlName="nbreInscrits"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.nbreInscrits.errors}">
+      <div *ngIf="submitted && sessionCoursFormGroup.controls.nbreInscrits.errors" class="invalid-feedback">
+        <div *ngIf="sessionCoursFormGroup.controls.nbreInscrits.errors.required">
+          Nombre d'inscrits obligatoire
+        </div>
+        <div *ngIf="sessionCoursFormGroup.controls.nbreInscrits.errors.pattern">
+          Le nombre d'inscrits doit être un entier positif
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>COURS</label>
+      <select id="cours" class="form-control" formControlName="cours"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.cours.errors}">
+        <option *ngFor="let cours of coursList" [value]="cours.id">{{ cours.matiere}}</option>
+        <div *ngIf="submitted && sessionCoursFormGroup.controls.cours.errors" class="invalid-feedback">
+          <div *ngIf="sessionCoursFormGroup.controls.cours.errors.required">
+            champ obligatoire
           </div>
         </div>
-      </td>
-      <td> <input type ="date" class="form-control" formControlName="dateFin"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.dateFin.errors}">
-        <div *ngIf="submitted && sessionCoursFormGroup.controls.dateFin.errors" class="invalid-feedback">
-          <div *ngIf="sessionCoursFormGroup.controls.dateFin.errors.required">
-            Date obligatoire
-          </div>
-        </div>
-      </td>
-      <td> <input type ="text" class="form-control" formControlName="nbreInscrits"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.nbreInscrits.errors}">
-        <div *ngIf="submitted && sessionCoursFormGroup.controls.nbreInscrits.errors" class="invalid-feedback">
-          <div *ngIf="sessionCoursFormGroup.controls.nbreInscrits.errors.required">
-            Nombre d'inscrits obligatoire
-          </div>
-          <div *ngIf="sessionCoursFormGroup.controls.nbreInscrits.errors.pattern">
-            Le nombre d'inscrits doit être un entier positif
-          </div>
-        </div>
-      </td>
-
-      <td >
-        <select id="cours" class="form-control" formControlName="cours"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.cours.errors}">
-
-          <option *ngFor="let cours of coursList" [value]="cours.id">{{ cours.matiere}}</option>
-          <div *ngIf="submitted && sessionCoursFormGroup.controls.cours.errors" class="invalid-feedback">
-            <div *ngIf="sessionCoursFormGroup.controls.cours.errors.required">
-              champ obligatoire
-            </div>
-          </div>
-        </select>
-      </td>
-
-      <td>
-        <select id="formateur" class="form-control" formControlName="formateur"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.formateur.errors}">
+      </select>
+    </div>
+    <div class="form-group">
+      <label>FORMATEUR</label>
+      <select id="formateur" class="form-control" formControlName="formateur"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.formateur.errors}">
         <option *ngFor="let formateur of formateurList" [value]="formateur.id">{{ formateur.nom }}</option>
-        </select>
-        <div *ngIf="submitted && sessionCoursFormGroup.controls.formateur.errors" class="invalid-feedback">
-          <div *ngIf="sessionCoursFormGroup.controls.formateur.errors.required">
-            champ obligatoire
-          </div>
+      </select>
+      <div *ngIf="submitted && sessionCoursFormGroup.controls.formateur.errors" class="invalid-feedback">
+        <div *ngIf="sessionCoursFormGroup.controls.formateur.errors.required">
+          champ obligatoire
         </div>
-
-      </td>
-
-      <td>
-        <select id="local" class="form-control" formControlName="local" [ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.local.errors}">
-          <option *ngFor="let local of localList" [value]="local.id">{{ local.sigle }}</option>
-        </select>
-        <div *ngIf="submitted && sessionCoursFormGroup.controls.local.errors" class="invalid-feedback">
-          <div *ngIf="sessionCoursFormGroup.controls.local.errors.required">
-            champ obligatoire
-          </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>LOCAL</label>
+      <select id="local" class="form-control" formControlName="local" [ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.local.errors}">
+        <option *ngFor="let local of localList" [value]="local.id">{{ local.sigle }}</option>
+      </select>
+      <div *ngIf="submitted && sessionCoursFormGroup.controls.local.errors" class="invalid-feedback">
+        <div *ngIf="sessionCoursFormGroup.controls.local.errors.required">
+          champ obligatoire
         </div>
-
-      </td>
-
-      </tbody>
-    </table>
+      </div>
+    </div>
     <button (click)="onSaveSessionCours()" class="btn btn-success">
-      Save
+      Créer
     </button>
   </form>
 </div>

@@ -4,6 +4,7 @@ import {CoursService} from '../../services/cours.service';
 import {ActivatedRoute} from '@angular/router';
 import {SessionCours} from "../../entities/sessionCours.entities";
 import {SessionCoursService} from "../../services/session-cours.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-editcours',
@@ -15,8 +16,7 @@ export class EditcoursComponent implements OnInit{
   submitted = false;
   idCours: number;
   sessionsCours?:SessionCours[]
-  constructor(private coursService: CoursService,private fb:
-    FormBuilder,private sessionCoursService:SessionCoursService,activatedRoute : ActivatedRoute) {
+  constructor(private router:Router,private coursService: CoursService,private fb: FormBuilder,private sessionCoursService:SessionCoursService,activatedRoute : ActivatedRoute) {
     this.idCours=activatedRoute.snapshot.params.idcours;
   }
   ngOnInit(): void {
@@ -32,16 +32,38 @@ export class EditcoursComponent implements OnInit{
     this.submitted = true;
     if (this.coursFormGroup?.invalid) { return; }
 
-    this.coursService.updateCours(this.coursFormGroup?.value).subscribe(data => {alert('maj ok')},
+    this.coursService.updateCours(this.coursFormGroup?.value).subscribe(
+      data => {alert('maj ok');
+        this.router.navigate(['cours'])
+      },
       err => {
         alert(err.headers.get("error"));
       });
   }
   onSeeSessionsCours() {
 
-    this.sessionCoursService.getSessionsCoursCours(this.idCours).subscribe(data => {this.sessionsCours=data},
+    this.sessionCoursService.getSessionsCoursCours(this.idCours).subscribe(
+      data =>
+      {this.sessionsCours=data;
+      },
       err => {
         alert(err.headers.get("error"));
       });
+  }
+  onDelete(sc: SessionCours) {
+    let v = confirm('êtes vous sûr de vouloir supprimer ? ');
+    if (v) {
+      this.sessionCoursService.deleteSessionCours(sc).subscribe(
+        {
+          next: data => {
+            this.onSeeSessionsCours(); //rafraîchissement de la page actuelle
+          },
+          error: err => { alert(err.headers.get("error")); }
+        }
+      );
+    }
+  }
+  onEdit(sc: SessionCours) {
+    this.router.navigateByUrl('editSessionCours/'+sc.id);
   }
 }

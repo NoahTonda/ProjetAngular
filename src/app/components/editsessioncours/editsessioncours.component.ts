@@ -10,6 +10,7 @@ import {Cours} from "../../entities/cours.entities";
 import {Formateur} from "../../entities/formateur.entities";
 import {Local} from "../../entities/local.entities";
 import {formatDate} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-editsessioncours',
@@ -22,13 +23,10 @@ export class EditsessioncoursComponent implements OnInit{
   formateurList: Formateur[]=[];
   localList: Local[]=[];
 
-  @Input() coursact? : FormGroup;
-  @Input() locact? : FormGroup;
-  @Input() formact? : FormGroup;
   @Input() sessionCours?: SessionCours;
   submitted = false;
   idSession: number;
-  constructor(private sessionCoursService: SessionCoursService,private formateurService: FormateurService, private localService: LocalService, private coursService: CoursService,private fb: FormBuilder,activatedRoute : ActivatedRoute) {
+  constructor(private router:Router,private sessionCoursService: SessionCoursService,private formateurService: FormateurService, private localService: LocalService, private coursService: CoursService,private fb: FormBuilder,activatedRoute : ActivatedRoute) {
     this.idSession=activatedRoute.snapshot.params.idSessionCours;
   }
   ngOnInit(): void {
@@ -38,9 +36,9 @@ export class EditsessioncoursComponent implements OnInit{
         dateDebut: [formatDate(sessionCours.dateDebut, 'yyyy-MM-dd', 'en'), [Validators.required]],
         dateFin: [formatDate(sessionCours.dateFin, 'yyyy-MM-dd', 'en'), [Validators.required]],
         nbreInscrits: [sessionCours.nbreInscrits, [Validators.required, Validators.pattern(/^[1-9]\d*$/)]],
-        formateur: [sessionCours.formateur, Validators.required],
-        local: [sessionCours.local, Validators.required],
-        cours: [sessionCours.cours, Validators.required],
+        formateur: [sessionCours.formateur.nom, Validators.required],
+        local: [sessionCours.local.sigle, Validators.required],
+        cours: [sessionCours.cours.matiere, Validators.required],
       });
       });
     // Chargez la liste des cours, formateurs et locaux depuis la base de données
@@ -85,9 +83,13 @@ export class EditsessioncoursComponent implements OnInit{
     if (this.sessionCoursFormGroup?.invalid) {
       return;
     }
-      this.sessionCoursService.updateSessionCours(this.sessionCoursFormGroup?.value).subscribe({
-        next: data => alert('maj ok'),
+    this.sessionCoursService.updateSessionCours(this.sessionCoursFormGroup?.value).subscribe({
+        next: data => {
+          alert('maj ok');
+          this.router.navigate(['sessionCours']);
+        },
         error : err => alert(err.headers.get("error"))
       })
     }
+
 }

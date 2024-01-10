@@ -15,10 +15,8 @@ export class SessionCoursService{
   deleteSessionCours(sc: SessionCours): Observable<void>{
     return this.http.delete<void>(this.host + '/sessionCours/' +sc.id);
   }
-  save(sc: SessionCours,c:Cours, f:Formateur, l:Local): Observable<SessionCours>{
-    sc.cours=c;
-    sc.formateur=f;
-    sc.local=l;
+  save(sc: SessionCours): Observable<SessionCours>{
+
     return this.http.post<SessionCours>(this.host + '/sessionCours',sc);
   }
   updateSessionCours(sc: SessionCours): Observable<SessionCours>{

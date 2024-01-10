@@ -62,6 +62,16 @@
           <td>{{sc.cours.matiere}}</td>
           <td>{{sc.formateur.nom}}</td>
           <td>{{sc.local.sigle}}</td>
+          <td>
+            <button (click)="onDelete(sc)" class="btn btn-danger">
+              <span class="fa fa-trash-o"></span>
+            </button>
+          </td>
+          <td>
+            <button (click)="onEdit(sc)" class="btn btn-info">
+              <span class="fa fa-edit"></span>
+            </button>
+          </td>
         </tr>
         </tbody>
       </table>
