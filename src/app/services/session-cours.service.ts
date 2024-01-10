@@ -23,6 +23,10 @@ export class SessionCoursService{
     return this.http.put<SessionCours>(this.host + '/sessionCours/' +
       sc.id, sc);
   }
+  getSessionCoursDate(date: string): Observable<SessionCours[]>{
+    return this.http.get<SessionCours[]>(this.host + '/sessionCours/' +
+      'date=' + date);
+  }
   getSessionCours(id: number): Observable<SessionCours>{
     return this.http.get<SessionCours>(this.host + '/sessionCours/' + id);
   }

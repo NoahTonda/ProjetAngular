@@ -42,6 +42,7 @@
     </ul>
   </nav>
   <ng-container *ngIf="sessionsCours" >
+    <p>Nombre d'élèves inscrits : {{totalInscrits}}</p>
     <ng-container *ngIf="sessionsCours.length>0 else vide">
       <table class="table">
         <thead>

@@ -1,9 +1,5 @@
 <div class="container">
   <form [formGroup]="sessionCoursFormGroup" *ngIf="sessionCoursFormGroup">
-    <div class = "form-group">
-      <label>ID SESSION</label>
-      <input type ="text" class="form-control" formControlName="id" readonly>
-    </div>
     <div class="form-group">
       <label>DATE DE DÉBUT</label>
       <input type ="date" class="form-control" formControlName="dateDebut"[ngClass]="{'is-invalid': submitted && sessionCoursFormGroup.controls.dateDebut.errors}">

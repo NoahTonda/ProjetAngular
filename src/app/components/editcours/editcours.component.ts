@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
 export class EditcoursComponent implements OnInit{
   coursFormGroup?: FormGroup;
   submitted = false;
+  totalInscrits: number = 0;
   idCours: number;
   sessionsCours?:SessionCours[]
   constructor(private router:Router,private coursService: CoursService,private fb: FormBuilder,private sessionCoursService:SessionCoursService,activatedRoute : ActivatedRoute) {
@@ -45,6 +46,10 @@ export class EditcoursComponent implements OnInit{
     this.sessionCoursService.getSessionsCoursCours(this.idCours).subscribe(
       data =>
       {this.sessionsCours=data;
+        this.totalInscrits = 0;
+        data.forEach(session => {
+          this.totalInscrits += session.nbreInscrits;
+        })
       },
       err => {
         alert(err.headers.get("error"));
